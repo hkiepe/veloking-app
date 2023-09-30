@@ -27,3 +27,5 @@ yarn.lock
 package.json
 
 .vscode
+
+.gitpod.yml
