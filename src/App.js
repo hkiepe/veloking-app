@@ -1,12 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-import { onAuthStateChanged, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  onAuthStateChanged,
+  signOut,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth, db } from "./firebase-config";
-import { collection, onSnapshot, updateDoc, getDocs, doc, deleteDoc, addDoc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  updateDoc,
+  getDocs,
+  doc,
+  deleteDoc,
+  addDoc,
+  getDoc,
+} from "firebase/firestore";
 
 import { Modal, Layout, Row, Col, Card, Tag } from "antd";
 import { ToolTwoTone, DashboardTwoTone } from "@ant-design/icons";
-import "antd/dist/antd.css";
+//import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import ChangeVehicles from "./components/Rentals/ChangeVehicles/ChangeVehicles";
 
 import MainHeader from "./components/MainHeader/MainHeader";
@@ -30,7 +44,10 @@ function App() {
   const { Content } = Layout;
 
   const rentalsCollectionRef = useCallback(collection(db, "rentals"), [db]);
-  const rentalpointsCollectionRef = useCallback(collection(db, "rentalpoints"), [db]);
+  const rentalpointsCollectionRef = useCallback(
+    collection(db, "rentalpoints"),
+    [db]
+  );
   const vehiclesCollectionRef = useCallback(collection(db, "vehicles"), [db]);
   const pricesCollectionRef = useCallback(collection(db, "prices"), [db]);
 
@@ -112,10 +129,18 @@ function App() {
       rental.payments[0].paymentTimestamp = startRentalTime.toISOString();
       rental.payments[0].amount = parseInt(rental.payments[0].amount);
       rental.vehicles = rental.vehicles.map((vehicle) => {
-        return { vehicleid: vehicle, startDateTime: startRentalTime.toISOString() };
+        return {
+          vehicleid: vehicle,
+          startDateTime: startRentalTime.toISOString(),
+        };
       });
       try {
-        await addDoc(rentalsCollectionRef, { ...rental, rentalpoint, startRentalTime: startRentalTime.toISOString(), rented: true });
+        await addDoc(rentalsCollectionRef, {
+          ...rental,
+          rentalpoint,
+          startRentalTime: startRentalTime.toISOString(),
+          rented: true,
+        });
         const response = await getDocs(vehiclesCollectionRef);
         if (!response) {
           throw new Error("Something went wrong");
@@ -133,7 +158,13 @@ function App() {
       getRentals();
       getVehicles();
     },
-    [rentalsCollectionRef, vehiclesCollectionRef, rentalpoint, getRentals, getVehicles]
+    [
+      rentalsCollectionRef,
+      vehiclesCollectionRef,
+      rentalpoint,
+      getRentals,
+      getVehicles,
+    ]
   );
 
   const getUserPersonalInfo = useCallback(async () => {
@@ -153,7 +184,14 @@ function App() {
     getRentals();
     getVehicles();
     getPrices();
-  }, [addRentalHandler, getPrices, getVehicles, getRentalpoints, getRentals, getUserPersonalInfo]);
+  }, [
+    addRentalHandler,
+    getPrices,
+    getVehicles,
+    getRentalpoints,
+    getRentals,
+    getUserPersonalInfo,
+  ]);
 
   const deleteRentalHandler = async (id, rentedVehicles) => {
     try {
@@ -197,7 +235,11 @@ function App() {
   const loginHandler = async (loginEmail, loginPassword, rentalpoint) => {
     setIsLoading(true);
     try {
-      const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      const user = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
       await updateDoc(doc(db, "users", user.user.uid), { rentalpoint });
       setLoggedInUser(user);
       setRentalpoint(rentalpoint);
@@ -220,7 +262,13 @@ function App() {
     setIsChangeVehicleVisible(true);
   };
 
-  const changeVehicle = async (rentalId, vehiclesToAdd, vehiclesToReturn, formData, canBeCompleted) => {
+  const changeVehicle = async (
+    rentalId,
+    vehiclesToAdd,
+    vehiclesToReturn,
+    formData,
+    canBeCompleted
+  ) => {
     const operationTime = new Date();
     try {
       const rentalDoc = await getDoc(doc(db, "rentals", rentalId));
@@ -228,7 +276,11 @@ function App() {
         const newRentalData = rentalDoc.data().vehicles.map((vehicle) => {
           if (!vehicle.returned) {
             if (vehiclesToReturn.includes(vehicle.vehicleid)) {
-              return { ...vehicle, endDateTime: operationTime.toISOString(), returned: true };
+              return {
+                ...vehicle,
+                endDateTime: operationTime.toISOString(),
+                returned: true,
+              };
             } else {
               return vehicle;
             }
@@ -237,11 +289,17 @@ function App() {
           }
         });
         vehiclesToAdd.forEach((vehicle) => {
-          newRentalData.push({ vehicleid: vehicle, startDateTime: operationTime.toISOString() });
+          newRentalData.push({
+            vehicleid: vehicle,
+            startDateTime: operationTime.toISOString(),
+          });
         });
         const payments = rentalDoc.data().payments;
         if (formData.payments[0].amount > 0) {
-          payments.push({ ...formData.payments[0], paymentTimestamp: operationTime.toISOString() });
+          payments.push({
+            ...formData.payments[0],
+            paymentTimestamp: operationTime.toISOString(),
+          });
         }
         if (canBeCompleted) {
           await updateDoc(doc(db, "rentals", rentalId), {
@@ -267,7 +325,10 @@ function App() {
       response.docs.forEach((item) => {
         vehiclesToReturn.forEach(async (vehicle) => {
           if (vehicle === item.data().vehicleid) {
-            await updateDoc(doc(db, "vehicles", item.id), { rented: false, rentalpoint });
+            await updateDoc(doc(db, "vehicles", item.id), {
+              rented: false,
+              rentalpoint,
+            });
           }
         });
         vehiclesToAdd.forEach(async (vehicle) => {
@@ -291,24 +352,30 @@ function App() {
 
   const InfoBar = () => {
     const currentRentalpoint =
-      rentalpoints && rentalpoints.filter((rentalPoint) => rentalPoint.key === rentalpoint).map((rentalPoint) => rentalPoint.name);
+      rentalpoints &&
+      rentalpoints
+        .filter((rentalPoint) => rentalPoint.key === rentalpoint)
+        .map((rentalPoint) => rentalPoint.name);
     const FixLink = (
       <a href="https://fix.inkontor.com">
         <ToolTwoTone style={{ fontSize: "2em" }} />
       </a>
     );
-    const DashboardLink = userPersonalInfo && userPersonalInfo.role !== "customerAdvisor" && (
-      <a href="https://dashboard.inkontor.com">
-        <DashboardTwoTone style={{ fontSize: "2em" }} />
-      </a>
-    );
+    const DashboardLink = userPersonalInfo &&
+      userPersonalInfo.role !== "customerAdvisor" && (
+        <a href="https://dashboard.inkontor.com">
+          <DashboardTwoTone style={{ fontSize: "2em" }} />
+        </a>
+      );
     return (
       <Row>
         <Row>
           <Col span={24}>
             <Card size="small">
               <Tag color="cyan">Location: {currentRentalpoint}</Tag>
-              <Tag color="cyan">User: {userPersonalInfo && userPersonalInfo.firstName}</Tag>
+              <Tag color="cyan">
+                User: {userPersonalInfo && userPersonalInfo.firstName}
+              </Tag>
               {FixLink} {DashboardLink}
             </Card>
           </Col>
@@ -319,15 +386,32 @@ function App() {
 
   return (
     <Layout>
-      <Modal destroyOnClose={true} title="Change Vehicles" visible={isChangeVehicleVisible} onCancel={handleCancel}>
-        <ChangeVehicles rentalpoint={rentalpoint} changeVehicle={changeVehicle} prices={prices} vehicles={vehicles} rentalData={rentalData} />
+      <Modal
+        destroyOnClose={true}
+        title="Change Vehicles"
+        visible={isChangeVehicleVisible}
+        onCancel={handleCancel}
+      >
+        <ChangeVehicles
+          rentalpoint={rentalpoint}
+          changeVehicle={changeVehicle}
+          prices={prices}
+          vehicles={vehicles}
+          rentalData={rentalData}
+        />
       </Modal>
-      <MainHeader rentalpoint={rentalpoint} isAuthenticated={loggedInUser} onLogout={logoutHandler} />
+      <MainHeader
+        rentalpoint={rentalpoint}
+        isAuthenticated={loggedInUser}
+        onLogout={logoutHandler}
+      />
       <Layout style={{ minHeight: "100vh" }}>
         <Layout className="site-layout">
           {loggedInUser && <InfoBar />}
           <Content style={{ margin: "0 16px" }}>
-            {!loggedInUser && !isLoading && <Login rentalpoints={rentalpoints} onLogin={loginHandler} />}
+            {!loggedInUser && !isLoading && (
+              <Login rentalpoints={rentalpoints} onLogin={loginHandler} />
+            )}
             {loggedInUser && !isLoading && !error && (
               <Home
                 prices={prices}
