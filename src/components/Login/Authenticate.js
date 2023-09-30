@@ -107,7 +107,7 @@ const Authenticate = () => {
                 setLoginPassword(event.target.value);
               }}
             />
-            <button onClick={login}>Login</button>
+            <CustomButton onClick={login}>Login</CustomButton>
           </Card>
         </Fragment>
       )}
