@@ -1,5 +1,11 @@
 import React, { Fragment, useState } from "react";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { auth } from "../../firebase-config";
 
 import classes from "./Authenticate.module.css";
@@ -15,7 +21,11 @@ const Authenticate = () => {
 
   const register = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+      const user = await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
       console.log(user);
       console.log(auth);
       const check = await updateProfile(auth.currentUser, {
@@ -30,7 +40,11 @@ const Authenticate = () => {
 
   const login = async () => {
     try {
-      const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      const user = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
     } catch (error) {
       console.log(error.message);
     }
@@ -75,7 +89,7 @@ const Authenticate = () => {
             />
             <CustomButton onClick={register}>Create User</CustomButton>
           </Card>
-          {/* <Card className={classes.input}>
+          <Card className={classes.input}>
             <h1>Login</h1>
             <label htmlFor="email">Email</label>
             <input
@@ -93,8 +107,8 @@ const Authenticate = () => {
                 setLoginPassword(event.target.value);
               }}
             />
-            <Button onClick={login}>Login</Button>
-          </Card> */}
+            <button onClick={login}>Login</button>
+          </Card>
         </Fragment>
       )}
     </Fragment>
