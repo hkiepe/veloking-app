@@ -168,14 +168,14 @@ function App() {
   );
 
   const getUserPersonalInfo = useCallback(async () => {
-    /* try { TODO: fix this reading 'indexOf' error
-      const userDoc = await getDoc(doc(db, "users", loggedInUser.uid));
-      setUserPersonalInfo(userDoc.data());
+    try {
+      if (loggedInUser && loggedInUser.uid != null) {
+        const userDoc = await getDoc(doc(db, "users", loggedInUser.uid));
+        setUserPersonalInfo(userDoc.data());
+      }
     } catch (error) {
       setError(error.message);
-    } */
-    const userDoc = await getDoc(doc(db, "users", loggedInUser.uid));
-    setUserPersonalInfo(userDoc.data());
+    }
   }, [loggedInUser]);
 
   useEffect(() => {
