@@ -179,6 +179,18 @@ function App() {
   }, [loggedInUser]);
 
   useEffect(() => {
+    fetch("https://skywalker.inkontor.com/point/list", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((data) => {
+        return data.json();
+      })
+      .then((rentalpoints) => {
+        console.log(rentalpoints);
+      });
     getUserPersonalInfo();
     getRentalpoints();
     getRentals();
