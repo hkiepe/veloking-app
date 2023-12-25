@@ -86,6 +86,7 @@ function App() {
         throw new Error("Something went wrong");
       }
       const data = response.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      console.log("rentalpoints", data);
       setRentalpoints(data);
     } catch (error) {
       setError(error.message);
@@ -179,18 +180,20 @@ function App() {
   }, [loggedInUser]);
 
   useEffect(() => {
-    fetch("https://skywalker.inkontor.com/point/list", {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-      },
-    })
-      .then((data) => {
-        return data.json();
-      })
-      .then((rentalpoints) => {
-        console.log(rentalpoints);
-      });
+    async function fetchRentalpoints() {
+      const response = await fetch(
+        "https://skywalker.inkontor.com/point/list",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+          },
+        }
+      );
+      const resData = await response.json();
+      console.log(resData);
+    }
+    fetchRentalpoints();
     getUserPersonalInfo();
     getRentalpoints();
     getRentals();
