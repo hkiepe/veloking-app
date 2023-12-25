@@ -22,6 +22,7 @@ import { ToolTwoTone, DashboardTwoTone } from "@ant-design/icons";
 //import "antd/dist/antd.css";
 import "antd/dist/antd.min.css";
 import ChangeVehicles from "./components/Rentals/ChangeVehicles/ChangeVehicles";
+import { fetchAvailableRentalpoints } from "./components/helperFunctions/http";
 
 import MainHeader from "./components/MainHeader/MainHeader";
 import Login from "./components/Login/Login";
@@ -181,17 +182,17 @@ function App() {
 
   useEffect(() => {
     async function fetchRentalpoints() {
-      const response = await fetch(
-        "https://skywalker.inkontor.com/point/list",
-        {
-          method: "GET",
-          headers: {
-            accept: "application/json",
-          },
-        }
-      );
-      const resData = await response.json();
-      console.log(resData);
+      setIsLoading(true);
+      try {
+        const rentalpoints = await fetchAvailableRentalpoints();
+        console.log("Rentalpoints", rentalpoints);
+        // setRentalpoints(data);
+        setIsLoading(false);
+      } catch (error) {
+        setError(error.message);
+        console.log("error", error.message);
+        setIsLoading(false);
+      }
     }
     fetchRentalpoints();
     getUserPersonalInfo();
