@@ -194,7 +194,7 @@ function App() {
         setIsLoading(false);
       }
     }
-    fetchRentalpoints();
+    // fetchRentalpoints();
     getUserPersonalInfo();
     getRentalpoints();
     getRentals();

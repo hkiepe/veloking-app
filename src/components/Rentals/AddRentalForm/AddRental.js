@@ -4,7 +4,22 @@ import validateForm from "./validateForm.js";
 
 import countVehiclePrice from "./countVehiclePrice";
 
-import { Popconfirm, Card, Select, TimePicker, Steps, Button, message, Switch, Checkbox, Radio, Input, Tabs, List, Tag } from "antd";
+import {
+  Popconfirm,
+  Card,
+  Select,
+  TimePicker,
+  Steps,
+  Button,
+  message,
+  Switch,
+  Checkbox,
+  Radio,
+  Input,
+  Tabs,
+  List,
+  Tag,
+} from "antd";
 
 import moment from "moment";
 
@@ -41,7 +56,24 @@ const AddRental = (props) => {
   useEffect(() => {
     setLiability(
       formData.vehicles
-        .map((vehicle) => countVehiclePrice(vehicle, props.vehicles, props.prices, formData))
+        .map((vehicle) => {
+          console.log(
+            "Vehicle: ",
+            vehicle,
+            "Vehicles : ",
+            props.vehicles,
+            "Prices: ",
+            props.prices,
+            "Form Data: ",
+            formData
+          );
+          return countVehiclePrice(
+            vehicle,
+            props.vehicles,
+            props.prices,
+            formData
+          );
+        })
         .reduce((partialSum, a) => partialSum + a, 0)
     );
   }, [props.vehicles, props.prices, formData]);
@@ -101,8 +133,20 @@ const AddRental = (props) => {
   const prepaymentChangeHandler = (event) => {
     setFormData({
       ...formData,
-      payments: [{ type: "prepayment", amount: event.target.value, rentalpoint: props.rentalpoint }],
-      liabilities: [{ type: "prepayment", amount: liability, rentalpoint: props.rentalpoint }],
+      payments: [
+        {
+          type: "prepayment",
+          amount: event.target.value,
+          rentalpoint: props.rentalpoint,
+        },
+      ],
+      liabilities: [
+        {
+          type: "prepayment",
+          amount: liability,
+          rentalpoint: props.rentalpoint,
+        },
+      ],
     });
   };
 
@@ -120,7 +164,8 @@ const AddRental = (props) => {
 
   const intervalChange = (event) => {
     event.target.value === "Hours" && setFormData({ ...formData, days: 0 });
-    event.target.value === "Days" && setFormData({ ...formData, hours: "00:00" });
+    event.target.value === "Days" &&
+      setFormData({ ...formData, hours: "00:00" });
     setFormData({ ...formData, interval: event.target.value });
   };
 
@@ -162,7 +207,9 @@ const AddRental = (props) => {
         hours: "00:00",
         days: 0,
         interval: "Hours",
-        payments: [{ type: "prepayment", amount: 0, rentalpoint: props.rentalpoint }],
+        payments: [
+          { type: "prepayment", amount: 0, rentalpoint: props.rentalpoint },
+        ],
       });
     } else {
       message.error(validated.map((valid) => <p>{valid.message}</p>));
@@ -175,19 +222,40 @@ const AddRental = (props) => {
       <div className={classes["control-group"]}>
         <div className={classes["form-control"]}>
           <label htmlFor="firstName">First Name</label>
-          <Input onChange={firstNameChangeHandler} value={formData.firstName} type={"text"} id={"firstName"} />
+          <Input
+            onChange={firstNameChangeHandler}
+            value={formData.firstName}
+            type={"text"}
+            id={"firstName"}
+          />
         </div>
         <div className={classes["form-control"]}>
           <label htmlFor="lastName">Last Name</label>
-          <Input onChange={lastNameChangeHandler} value={formData.lastName} type={"text"} id={"lastName"} />
+          <Input
+            onChange={lastNameChangeHandler}
+            value={formData.lastName}
+            type={"text"}
+            id={"lastName"}
+          />
         </div>
       </div>
-      <Switch onChange={peselChange} checked={formData.peselSelected} checkedChildren="PESEL" unCheckedChildren="ID Number" defaultChecked />
+      <Switch
+        onChange={peselChange}
+        checked={formData.peselSelected}
+        checkedChildren="PESEL"
+        unCheckedChildren="ID Number"
+        defaultChecked
+      />
       {formData.peselSelected && (
         <div className={classes["control-group"]}>
           <div className={classes["form-control"]}>
             <label htmlFor="pesel">PESEL</label>
-            <Input onChange={peselChangeHandler} value={formData.pesel} type={"text"} id={"pesel"} />
+            <Input
+              onChange={peselChangeHandler}
+              value={formData.pesel}
+              type={"text"}
+              id={"pesel"}
+            />
           </div>
         </div>
       )}
@@ -195,11 +263,21 @@ const AddRental = (props) => {
         <div className={classes["control-group"]}>
           <div className={classes["form-control"]}>
             <label htmlFor="idNumber">ID Number</label>
-            <Input onChange={idNumberChangeHandler} value={formData.idNumber} type={"text"} id={"idNumber"} />
+            <Input
+              onChange={idNumberChangeHandler}
+              value={formData.idNumber}
+              type={"text"}
+              id={"idNumber"}
+            />
           </div>
           <div className={classes["form-control"]}>
             <label htmlFor="country">Country</label>
-            <Input onChange={countryChangeHandler} value={formData.country} type={"text"} id={"country"} />
+            <Input
+              onChange={countryChangeHandler}
+              value={formData.country}
+              type={"text"}
+              id={"country"}
+            />
           </div>
         </div>
       )}
@@ -210,15 +288,30 @@ const AddRental = (props) => {
         <div className={classes["control-group"]}>
           <div className={classes["form-control"]}>
             <label htmlFor="streetAndNumber">Street and Number</label>
-            <Input onChange={streetAndNumberChangeHandler} value={formData.streetAndNumber} type={"text"} id={"streetAndNumber"} />
+            <Input
+              onChange={streetAndNumberChangeHandler}
+              value={formData.streetAndNumber}
+              type={"text"}
+              id={"streetAndNumber"}
+            />
           </div>
           <div className={classes["form-control"]}>
             <label htmlFor="location">Location</label>
-            <Input onChange={locationChangeHandler} value={formData.location} type={"text"} id={"location"} />
+            <Input
+              onChange={locationChangeHandler}
+              value={formData.location}
+              type={"text"}
+              id={"location"}
+            />
           </div>
           <div className={classes["form-control"]}>
             <label htmlFor="postcode">Post Code</label>
-            <Input onChange={postcodeChangeHandler} value={formData.postcode} type={"text"} id={"postcode"} />
+            <Input
+              onChange={postcodeChangeHandler}
+              value={formData.postcode}
+              type={"text"}
+              id={"postcode"}
+            />
           </div>
         </div>
       )}
@@ -230,17 +323,32 @@ const AddRental = (props) => {
       <div className={classes["control-group"]}>
         <div className={classes["form-control"]}>
           <label htmlFor="email">E-Mail Address</label>
-          <Input onChange={emailChangeHandler} value={formData.email} type={"email"} id={"email"} />
+          <Input
+            onChange={emailChangeHandler}
+            value={formData.email}
+            type={"email"}
+            id={"email"}
+          />
         </div>
       </div>
       <div className={classes["control-group"]}>
         <div className={classes["form-control"]}>
           <label htmlFor="countryCode">Country Code</label>
-          <Input onChange={countryCodeChangeHandler} value={formData.countryCode} type={"text"} id={"countryCode"} />
+          <Input
+            onChange={countryCodeChangeHandler}
+            value={formData.countryCode}
+            type={"text"}
+            id={"countryCode"}
+          />
         </div>
         <div className={classes["form-control"]}>
           <label htmlFor="phone">Phone Number</label>
-          <Input onChange={phoneChangeHandler} value={formData.phone} type={"text"} id={"phone"} />
+          <Input
+            onChange={phoneChangeHandler}
+            value={formData.phone}
+            type={"text"}
+            id={"phone"}
+          />
         </div>
       </div>
     </Fragment>
@@ -275,13 +383,26 @@ const AddRental = (props) => {
           options={
             props.rentalpoint &&
             props.vehicles
-              .filter((vehicle) => vehicle.rentalpoint === props.rentalpoint && vehicle.readytouse && !vehicle.rented)
-              .map((vehicle) => ({ key: vehicle.vehicleid, value: vehicle.vehicleid }))
+              .filter(
+                (vehicle) =>
+                  vehicle.rentalpoint === props.rentalpoint &&
+                  vehicle.readytouse &&
+                  !vehicle.rented
+              )
+              .map((vehicle) => ({
+                key: vehicle.vehicleid,
+                value: vehicle.vehicleid,
+              }))
           }
         />
       </div>
       <div className={classes["form-control"]}>
-        <Radio.Group options={duration} onChange={intervalChange} value={formData.interval} optionType="button" />
+        <Radio.Group
+          options={duration}
+          onChange={intervalChange}
+          value={formData.interval}
+          optionType="button"
+        />
         {formData.interval === "Hours" && (
           <Fragment>
             <label htmlFor="fromDate">Duration hours</label>
@@ -297,7 +418,12 @@ const AddRental = (props) => {
         {formData.interval === "Days" && (
           <Fragment>
             <label htmlFor="fromDate">Duration days</label>
-            <Select defaultValue={formData.days} options={createDays()} style={{ width: 120 }} onChange={daysChangeHandler} />
+            <Select
+              defaultValue={formData.days}
+              options={createDays()}
+              style={{ width: 120 }}
+              onChange={daysChangeHandler}
+            />
           </Fragment>
         )}
       </div>
@@ -321,7 +447,12 @@ const AddRental = (props) => {
       { label: "Email", value: `${formData.email}` },
     ],
     rental: [
-      { label: "Vehicles", value: formData.vehicles.map((vehicle) => <Tag key={vehicle}>{vehicle}</Tag>) },
+      {
+        label: "Vehicles",
+        value: formData.vehicles.map((vehicle) => (
+          <Tag key={vehicle}>{vehicle}</Tag>
+        )),
+      },
       { label: "Hours", value: formData.hours },
       { label: "Days", value: formData.days },
       { label: "Today", value: "Whole day" },
@@ -349,7 +480,14 @@ const AddRental = (props) => {
                 <List>
                   {item.value.map((vehicle) => (
                     <List.Item key={vehicle}>
-                      {vehicle} - {countVehiclePrice(vehicle, props.vehicles, props.prices, formData)} PLN
+                      {vehicle} -{" "}
+                      {countVehiclePrice(
+                        vehicle,
+                        props.vehicles,
+                        props.prices,
+                        formData
+                      )}{" "}
+                      PLN
                     </List.Item>
                   ))}
                 </List>
@@ -359,7 +497,14 @@ const AddRental = (props) => {
                   Sum:
                   <div style={{ border: "3px solid red" }}>
                     {item.value
-                      .map((vehicle) => countVehiclePrice(vehicle, props.vehicles, props.prices, formData))
+                      .map((vehicle) =>
+                        countVehiclePrice(
+                          vehicle,
+                          props.vehicles,
+                          props.prices,
+                          formData
+                        )
+                      )
                       .reduce((partialSum, a) => partialSum + a, 0)}{" "}
                     PLN
                   </div>
@@ -369,7 +514,12 @@ const AddRental = (props) => {
                 <div className={classes["control-group"]}>
                   <div className={classes["form-control"]}>
                     <label htmlFor="email">Payment amount</label>
-                    <Input onChange={prepaymentChangeHandler} value={formData.payments[0].amount} type={"text"} id={"prepayment"} />
+                    <Input
+                      onChange={prepaymentChangeHandler}
+                      value={formData.payments[0].amount}
+                      type={"text"}
+                      id={"prepayment"}
+                    />
                   </div>
                 </div>
               </Card>
@@ -450,7 +600,9 @@ const AddRental = (props) => {
           <Step key={item.title} title={item.title} />
         ))}
       </Steps>
-      <div className={classes["steps-content"]}>{steps[formData.current].content}</div>
+      <div className={classes["steps-content"]}>
+        {steps[formData.current].content}
+      </div>
       <div className={classes["steps-action"]}>
         {formData.current < steps.length - 1 && (
           <Button type="primary" onClick={() => next()}>
@@ -458,7 +610,12 @@ const AddRental = (props) => {
           </Button>
         )}
         {formData.current === steps.length - 1 && (
-          <Popconfirm title="Are you sure to create the rental?" onConfirm={addRentalHandler} okText="Yes" cancelText="No">
+          <Popconfirm
+            title="Are you sure to create the rental?"
+            onConfirm={addRentalHandler}
+            okText="Yes"
+            cancelText="No"
+          >
             <Button type="primary">Done</Button>
           </Popconfirm>
         )}
