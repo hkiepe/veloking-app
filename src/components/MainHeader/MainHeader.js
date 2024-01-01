@@ -12,7 +12,10 @@ const MainHeader = (props) => {
     <Fragment>
       <Header className={classes["header"]}>
         <div className="logo" />
-        <Navigation isLoggedIn={props.isAuthenticated} onLogout={props.onLogout} />
+        <Navigation
+          isLoggedIn={props.isAuthenticated}
+          onLogout={props.onLogout}
+        />
       </Header>
     </Fragment>
   );
