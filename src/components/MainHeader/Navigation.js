@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { Menu } from "antd";
 
@@ -11,12 +11,12 @@ const Navigation = (props) => {
       {props.isLoggedIn && (
         <>
           <Menu.Item key="4">
-            <Link to="/">Home</Link>
+            <NavLink to="/">Home</NavLink>
           </Menu.Item>
           <Menu.Item key="4">
-            <Link to="/rentals">Rentals</Link>
+            <NavLink to="/rentals">Rentals</NavLink>
           </Menu.Item>
-          <Menu.Item key="3" onClick={props.onLogout}>
+          <Menu.Item key="5" onClick={props.onLogout}>
             Logout
           </Menu.Item>
         </>

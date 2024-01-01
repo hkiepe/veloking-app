@@ -399,7 +399,7 @@ function HomePage() {
       </Row>
     );
   };
-  
+
   return (
     <Layout>
       <Modal
@@ -445,7 +445,6 @@ function HomePage() {
             {isLoading && <p>Loading ...</p>}
             {!isLoading && error && <p>{error}</p>}
           </Content>
-          <MainFooter />
         </Layout>
       </Layout>
     </Layout>
