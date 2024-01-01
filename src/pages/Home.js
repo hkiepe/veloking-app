@@ -20,7 +20,6 @@ import {
 import { Modal, Layout, Row, Col, Card, Tag } from "antd";
 import { ToolTwoTone, DashboardTwoTone } from "@ant-design/icons";
 //import "antd/dist/antd.css";
-import "antd/dist/antd.min.css";
 import ChangeVehicles from "../components/Rentals/ChangeVehicles/ChangeVehicles";
 import { fetchAvailableRentalpoints } from "../components/helperFunctions/http";
 

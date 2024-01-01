@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import "antd/dist/antd.min.css";
+
 import HomePage from "./pages/Home";
 import RentalPage from "./pages/Rentals";
 import RootLayout from "./pages/Root";

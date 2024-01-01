@@ -11,10 +11,24 @@ const Navigation = (props) => {
       {props.isLoggedIn && (
         <>
           <Menu.Item key="4">
-            <NavLink to="/">Home</NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              to="/"
+            >
+              Home
+            </NavLink>
           </Menu.Item>
           <Menu.Item key="4">
-            <NavLink to="/rentals">Rentals</NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              to="/rentals"
+            >
+              Rentals
+            </NavLink>
           </Menu.Item>
           <Menu.Item key="5" onClick={props.onLogout}>
             Logout
