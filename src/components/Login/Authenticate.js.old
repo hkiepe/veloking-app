@@ -39,6 +39,7 @@ const Authenticate = () => {
   };
 
   const login = async () => {
+    console.log('Test :>> ');
     try {
       const user = await signInWithEmailAndPassword(
         auth,

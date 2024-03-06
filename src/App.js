@@ -6,6 +6,7 @@ import HomePage from "./pages/Home";
 import RentalPage from "./pages/Rentals";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/Error";
+import Authentication from "./pages/Authentication"
 
 const router = createBrowserRouter([
   {
@@ -13,8 +14,9 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/rentals", element: <RentalPage /> },
+      { index: true, element: <HomePage /> },
+      { path: "auth", element: <Authentication /> },
+      { path: "rentals", element: <RentalPage /> },
     ],
   },
 ]);

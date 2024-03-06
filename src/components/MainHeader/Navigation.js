@@ -8,7 +8,7 @@ import classes from "./Navigation.module.css";
 const Navigation = (props) => {
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-      {props.isLoggedIn && (
+      {props.isLoggedIn ? (
         <>
           <Menu.Item key="4">
             <NavLink
@@ -34,6 +34,17 @@ const Navigation = (props) => {
             Logout
           </Menu.Item>
         </>
+      ) : (
+        <Menu.Item key="4">
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? classes.active : undefined
+            }
+            to="/auth"
+          >
+            Authentication
+          </NavLink>
+        </Menu.Item>
       )}
     </Menu>
   );

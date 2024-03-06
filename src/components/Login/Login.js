@@ -4,7 +4,8 @@ import { Card, Select, Input, Form, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
 import classes from "./Login.module.css";
-import Authenticate from "./Authenticate";
+// import Authenticate from "./Authenticate";
+import { ActionCodeOperation } from "firebase/auth";
 
 const Login = (props) => {
   const { Option } = Select;
@@ -15,8 +16,16 @@ const Login = (props) => {
 
   return (
     <Card>
-      <Form name="normal_login" className="login-form" initialValues={{ remember: true }} onFinish={onFinish}>
-        <Form.Item name="rentalpoint" rules={[{ required: true, message: "Please select a rentalpoint!" }]}>
+      <Form
+        name="normal_login"
+        className="login-form"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+      >
+        <Form.Item
+          name="rentalpoint"
+          rules={[{ required: true, message: "Please select a rentalpoint!" }]}
+        >
           <Select placeholder="Rentalpoint">
             {props.rentalpoints.map((rentalpoint) => (
               <Option key={rentalpoint.id} value={rentalpoint.key}>
@@ -26,12 +35,26 @@ const Login = (props) => {
           </Select>
         </Form.Item>
 
-        <Form.Item name="email" rules={[{ required: true, message: "Please input your Username!" }]}>
-          <Input type="email" prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
+        <Form.Item
+          name="email"
+          rules={[{ required: true, message: "Please input your Username!" }]}
+        >
+          <Input
+            type="email"
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder="Email"
+          />
         </Form.Item>
 
-        <Form.Item name="password" rules={[{ required: true, message: "Please input your Password!" }]}>
-          <Input prefix={<LockOutlined className="site-form-item-icon" />} type="password" placeholder="Password" />
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: "Please input your Password!" }]}
+        >
+          <Input
+            prefix={<LockOutlined className="site-form-item-icon" />}
+            type="password"
+            placeholder="Password"
+          />
         </Form.Item>
 
         <Form.Item>
@@ -44,10 +67,14 @@ const Login = (props) => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="login-form-button">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
             Log in
           </Button>
-          Or <a href="">register now!</a>
+          {/* Or <a href="">register now!</a> */}
         </Form.Item>
       </Form>
     </Card>
@@ -55,3 +82,12 @@ const Login = (props) => {
 };
 
 export default Login;
+
+export async function action({ request }) {
+  const data = await request.formData();
+  const authData = {
+    email: data.get("email"),
+    password: data.get("password"),
+  };
+  console.log("authData :>> ", authData);
+}

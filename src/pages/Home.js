@@ -86,7 +86,6 @@ function HomePage() {
         throw new Error("Something went wrong");
       }
       const data = response.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      console.log("rentalpoints", data);
       setRentalpoints(data);
     } catch (error) {
       setError(error.message);
@@ -451,3 +450,5 @@ function HomePage() {
 }
 
 export default HomePage;
+
+
