@@ -1,5 +1,6 @@
 import { json, redirect } from "react-router-dom";
 import AuthForm from "../components/Login/AuthForm";
+import { getAuthToken } from "../components/helperFunctions/auth";
 
 function AuthenticationPage() {
   return <AuthForm />;
